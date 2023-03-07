@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using ThuVienAnh.Models;
 
@@ -7,15 +8,19 @@ namespace ThuVienAnh.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ThuVienAnhContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ThuVienAnhContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var ListPhoto = _context.Photos.AsNoTracking()
+                .OrderByDescending(x => x.Id).ToList();
+            return View(ListPhoto);
         }
 
         public IActionResult Privacy()
