@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ThuVienAnh.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+var connectString = configuration.GetConnectionString("ThuVienAnhConnectionString");
+services.AddDbContext<ThuVienAnhContext>(options => options.UseSqlServer(connectString));
+
 
 var app = builder.Build();
 
